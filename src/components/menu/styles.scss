@@ -1,0 +1,223 @@
+$squareSize: 300px;
+$itemSize: 30px;
+$font: "Open Sans", sans-serif;
+$fontSize: 12px;
+$backgroundSize: $squareSize * 0.85;
+$backgroundInnerSize: $backgroundSize * 0.97;
+$transition: 1s;
+$textAppearingTransitionStep: 0.3s;
+$paddingSize: 5px;
+
+$background: #c1c1c1;
+$fontColor: #fff;
+$backgroundWrapper: rgba(0, 0, 0, 0.2);
+
+div {
+  box-sizing: border-box;
+}
+
+@mixin line {
+  &:before {
+    content: "";
+    height: 1px;
+    background: rgba($fontColor, 0.4);
+    width: 100%;
+    position: absolute;
+    top: 100%;
+  }
+}
+
+@mixin centerFix {
+  transform: translate(-50%, -50%);
+}
+
+@mixin radius {
+  border-radius: 50%;
+}
+
+@mixin square($size, $percents) {
+  width: $size * $percents;
+  height: $size * $percents;
+}
+
+@mixin center($size, $percents) {
+  @include square($size, $percents);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}
+
+@mixin toLeft($size, $percents) {
+  @include square($size, $percents);
+  top: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}
+
+@mixin rounded($color: #fff, $background: transparent, $borderThikness: 1px) {
+  background: $background;
+  border: $borderThikness solid $color;
+}
+html {
+  width: 100%;
+  height: 100%;
+}
+body {
+  background: $background;
+  background-image: url(../../../assets/images/background.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  font-family: $font;
+  font-size: $fontSize;
+  color: $fontColor;
+}
+.menu {
+  @include radius;
+  @include toLeft($squareSize, 1);
+  @include rounded;
+  &__background {
+    @include radius;
+    @include center($squareSize, 0.85);
+    @include rounded;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    &__image {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      @include radius;
+      @include center($backgroundSize, 0.97);
+      @include rounded;
+      overflow: hidden;
+      &__wrapper {
+        background-color: $backgroundWrapper;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+      }
+      img {
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        // transform: translate(25%, 25%);
+      }
+    }
+
+    &__info {
+      z-index: 3;
+      display: flex;
+      flex: 1;
+      width: 50%;
+      height: 100%;
+      flex-direction: column;
+      position: absolute;
+      &.expanded {
+        & > div {
+          .content {
+            transform: translateX(0%);
+          }
+          &:before {
+            transform: translateX(0%);
+          }
+        }
+      }
+      & > div {
+        padding: $paddingSize 0;
+        position: relative;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        .content {
+          transition: transform $transition;
+          transform: translateX(100%);
+          h4,
+          h2 {
+            margin: 0;
+          }
+        }
+        &:before {
+          transition: transform $transition;
+          transform: translateX(100%);
+        }
+      }
+      & > .menu__background {
+        &__top {
+          justify-content: flex-end;
+          &__content {
+            transition-delay: 0s;
+          }
+          @include line;
+          &:before {
+            transition-delay: $transition * 0.2;
+          }
+        }
+        &__middle {
+          &__content {
+            transition-delay: $textAppearingTransitionStep;
+          }
+          @include line;
+          &:before {
+            transition-delay: $transition * 0.2 + $textAppearingTransitionStep;
+          }
+        }
+        &__bottom {
+          justify-content: flex-start;
+          &__content {
+            transition-delay: $textAppearingTransitionStep * 2;
+          }
+        }
+      }
+    }
+  }
+
+  &__wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-origin: center;
+  }
+  &__item {
+    @include radius;
+    @include rounded;
+    position: absolute;
+    background-color: $background;
+    width: $itemSize;
+    height: $itemSize;
+    &__body {
+      width: 100%;
+      height: 100%;
+      & > div {
+        background-size: cover;
+        border-radius: 50%;
+      }
+    }
+    &__header {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      max-width: 100%;
+      & > div {
+        word-wrap: unset;
+        transition: opacity 1s, transform 1s;
+        transform: translateX(0);
+        opacity: 0;
+        span {
+          display: inline-block;
+          width: max-content;
+        }
+        &.expand {
+          opacity: 1;
+          transform: translateX(120%);
+        }
+      }
+    }
+  }
+}
