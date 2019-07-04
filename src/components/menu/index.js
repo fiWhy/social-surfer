@@ -25,7 +25,7 @@ export default class extends React.Component {
             this.setState({
                 opened: !this.state.opened
             })
-        }, 500)
+        }, 800)
     }
 
     componentDidMount() {

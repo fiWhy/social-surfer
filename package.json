@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx parcel src/index.html"
+    "start": "npx parcel src/index.html",
+    "build": "npx parcel build src/index.html",
+    "deploy": "npm run build && node ./deploy && rm -rf ./dist"
   },
   "keywords": [],
   "author": "",

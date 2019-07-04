@@ -17,7 +17,7 @@ class App extends React.Component {
                 {<Menu background={rivia}
                     menu={menu}
                     contentHeader={'<h4>Geralt of</h4><h2>Rivia</h2>'}
-                    contentBody={'<p>School of wolf</p>'}
+                    contentBody={'<p>School of the Wolf</p>'}
                     contentFooter={'<h2>Witcher</h2>'} />}
             </Wrapper>
         </Provider>

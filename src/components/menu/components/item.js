@@ -27,29 +27,34 @@ export class Item extends React.Component {
                     y: this.posY(angle),
                     angle,
                     progress
+                }, () => {
+                    if (progress === 1 && after) {
+                        after();
+                    }
                 });
-                if (progress === 1 && after) {
-                    after();
-                }
+
+
             });
         }
 
         this.close = (before = Promise.resolve(), after) => {
             const { angle: currentAngle, progress: currentProgress } = this.state;
             cancelAnimationFrame(this.frame);
-            this.frame = animate(easeInOut)(1000, 1 - currentProgress)((progress, frame) => {
-                this.frame = frame;
-                const angle = progress * (currentAngle);
-                this.setState({
-                    x: this.posX(currentAngle - currentAngle * progress),
-                    y: this.posY(currentAngle - currentAngle * progress),
-                    angle,
-                    progress
+            before.then(() => {
+                this.frame = animate(easeInOut)(1000, 1 - currentProgress)((progress, frame) => {
+                    this.frame = frame;
+                    const angle = progress * (currentAngle);
+                    this.setState({
+                        x: this.posX(currentAngle - currentAngle * progress),
+                        y: this.posY(currentAngle - currentAngle * progress),
+                        angle,
+                        progress
+                    }, () => {
+                        if (progress === 1 && after) {
+                            after();
+                        }
+                    });
                 });
-
-                if (progress === 1 && after) {
-                    after();
-                }
             });
         }
     }
@@ -72,7 +77,7 @@ export class Item extends React.Component {
     }
 
     render() {
-        const { el } = this.props;
+        const { el, opened } = this.props;
         const { x, y, expand } = this.state;
         return (
             <div className="menu__item"
@@ -81,7 +86,7 @@ export class Item extends React.Component {
                 }}
                 key={el.id}>
                 <div className="menu__item__header">
-                    <Text expand={expand} content={el.title} />
+                    <Text expand={expand && opened} content={el.title} />
                 </div>
                 <div className="menu__item__body">
                     <div style={{
