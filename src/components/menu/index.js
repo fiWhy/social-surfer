@@ -1,8 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import classnames from 'classnames';
-import menuList from './mock';
-import { add } from '../../store/actions/menu';
 import './styles.scss';
 import { Item } from './components/item';
 import { throttle } from 'lodash'
@@ -37,7 +34,7 @@ export default class extends React.Component {
     render() {
         const { background, menu, contentHeader, contentBody, contentFooter } = this.props;
         const { speed, opened } = this.state;
-        return <div className="menu" onClick={this.handleClose}>
+        return <div className={classnames({ 'menu': true , opened})} onClick={this.handleClose}>
             <div className="menu__background">
                 <div className="menu__background__image">
                     <div className="menu__background__image__wrapper"></div>
